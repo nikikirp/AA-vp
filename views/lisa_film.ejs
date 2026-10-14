@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <title>Lisa film</title>
+</head>
+<body>
+    <img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+    <h1>Eesti film</h1>
+    <h2>Lisa uus film</h2>
+    <form method="POST">
+        <label for="titleInput">Filmi pealkiri</label>
+        <input id="titleInput" name="titleInput" type="text" value="<%= title %>">
+        <br>
+        <label for="yearInput">Valmimisaasta</label>
+        <input id="yearInput" name="yearInput" type="number" value="<%= year %>">
+        <br>
+        <label for="durationInput">Kestus minutites</label>
+        <input id="durationInput" name="durationInput" type="number" value="<%= duration %>">
+        <br>
+        <input type="submit" value="Salvesta film">
+    </form>
+    <p><%= notice %></p>
+    <p><a href="/eestifilm">Tagasi</a></p>
+</body>
+</html>

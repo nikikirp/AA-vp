@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <title>Lisa amet</title>
+</head>
+<body>
+    <img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+    <h1>Eesti film</h1>
+    <h2>Lisa uus amet</h2>
+    <form method="POST">
+        <label for="positionInput">Ameti nimetus</label>
+        <input id="positionInput" name="positionInput" type="text" value="<%= positionName %>">
+        <br>
+        <input type="submit" value="Salvesta amet">
+    </form>
+    <p><%= notice %></p>
+    <p><a href="/eestifilm">Tagasi</a></p>
+</body>
+</html>

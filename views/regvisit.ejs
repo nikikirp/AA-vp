@@ -7,6 +7,14 @@
 <body>
 	<img src="pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
 	<h1>Registreeri oma külastus</h1>
+	
+	<!-- Siin kuvame viimase külastuse infot, kui see on olemas -->
+	<% if (typeof lastVisitText !== 'undefined' && lastVisitText) { %>
+		<p><strong><%= lastVisitText %></strong></p>
+	<% } else { %>
+		<p>Külastusi pole veel registreeritud.</p>
+	<% } %>
+
 	<ul>
 		<li><a href="/">Avalehele</a></li>
 	</ul>
