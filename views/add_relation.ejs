@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Nikita Kirpikin, veebiprogrammeerimine</title>
+    <script>
+        // Kuvab või peidab tegelaskuju välja sõltuvalt sellest, kas valitud amet on "näitleja"
+        function checkPosition(select) {
+            const selectedText = select.options[select.selectedIndex].text.toLowerCase();
+            const charDiv = document.getElementById('character-div');
+            
+            if (selectedText.includes('näitleja')) {
+                charDiv.style.display = 'block';
+            } else {
+                charDiv.style.display = 'none';
+                document.getElementById('characterInput').value = '';
+            }
+        }
+    </script>
+</head>
+<body>
+	<img src="/pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+	<h1>Lisa uus seos filmile</h1>
+    
+    <% if (typeof notice !== 'undefined' && notice) { %>
+        <p><strong><%= notice %></strong></p>
+    <% } %>
+
+    <form action="/eestifilm/add-relation" method="POST">
+        <!-- Filmi valik -->
+        <div>
+            <label for="filmInput">Film: </label><br>
+            <select id="filmInput" name="filmInput" required>
+                <option selected disabled>Vali film...</option>
+                <% films.forEach(film => { %>
+                    <option value="<%= film.id %>"><%= film.title %></option>
+                <% }) %>
+            </select>
+        </div>
+        <br>
+
+        <!-- Isiku valik -->
+        <div>
+            <label for="personInput">Isik: </label><br>
+            <select id="personInput" name="personInput" required>
+                <option selected disabled>Vali isik...</option>
+                <% persons.forEach(person => { %>
+                    <option value="<%= person.id %>"><%= person.first_name %> <%= person.last_name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <br>
+
+        <!-- Ameti valik -->
+        <div>
+            <label for="positionInput">Amet: </label><br>
+            <select id="positionInput" name="positionInput" onchange="checkPosition(this)" required>
+                <option selected disabled>Vali amet...</option>
+                <% positions.forEach(position => { %>
+                    <option value="<%= position.id %>"><%= position.position_name %></option>
+                <% }) %>
+            </select>
+        </div>
+        <br>
+
+        <!-- Tegelaskuju väli (nähtav ainult siis, kui amet on näitleja) -->
+        <div id="character-div" style="display: none;">
+            <label for="characterInput">Tegelaskuju nimi: </label><br>
+            <input id="characterInput" name="characterInput" type="text" placeholder="Tegelaskuju nimi...">
+            <br><br>
+        </div>
+
+        <button type="submit">Salvesta seos</button>
+    </form>
+    <br>
+    <ul>
+        <li><a href="/eestifilm">Tagasi Eesti filmi lehele</a></li>
+    </ul>
+</body>
+</html>

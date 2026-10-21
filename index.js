@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 //muudan "public" veebiserverile kättesaadavaks
 app.use(express.static('public'));
 //hakkame päringuid parsima
-app.use(bodyparser.urlencoded({extended: false}));
+app.use(bodyparser.urlencoded({extended: true}));
 
 app.get('/', (req, res)=>{
 	//res.send('Express.js veeb käivitus!');
@@ -320,5 +320,8 @@ app.use('/eestifilm', eestifilmRouter);
         if (conn) { await conn.end(); }
     }
 }); */
+
+const galleryPhotoUploadRouter = require('./routes/galleryPhotoUploadRoutes');
+app.use('/galleryphotoupload', galleryPhotoUploadRouter);
 
 app.listen(5324);

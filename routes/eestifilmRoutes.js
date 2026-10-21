@@ -1,32 +1,29 @@
 const express = require('express');
 const router = express.Router();
-
-//kasutatavad kontrollerid
-const {
-	eestifilm,
-	eestifilmInimesed,
-	eestifilmInimesedLisa,
-	eestifilmInimesedLisaPost,
-	eestifilmLisa,
-	eestifilmLisaPost,
-	ametLisa,
-	ametLisaPost
+const { 
+    eestifilm, 
+    eestifilmInimesed, 
+    eestifilmInimesedLisa, 
+    eestifilmInimesedLisaPost, 
+    eestifilmLisa, 
+    eestifilmLisaPost, 
+    ametLisa, 
+    ametLisaPost,
+    getAddRelation,
+    postAddRelation
 } = require('../controllers/eestifilmControllers');
 
-router.route('/').get(eestifilm);
+router.get('/', eestifilm);
+router.get('/film_inimesed', eestifilmInimesed);
+router.get('/lisa_film_inimesed', eestifilmInimesedLisa);
+router.post('/lisa_film_inimesed', eestifilmInimesedLisaPost);
+router.get('/lisa_film', eestifilmLisa);
+router.post('/lisa_film', eestifilmLisaPost);
+router.get('/lisa_amet', ametLisa);
+router.post('/lisa_amet', ametLisaPost);
 
-router.route('/film_inimesed').get(eestifilmInimesed);
-
-router.route('/lisa_film_inimesed').get(eestifilmInimesedLisa);
-
-router.route('/lisa_film_inimesed').post(eestifilmInimesedLisaPost);
-
-router.route('/lisa_film').get(eestifilmLisa);
-
-router.route('/lisa_film').post(eestifilmLisaPost);
-
-router.route('/lisa_amet').get(ametLisa);
-
-router.route('/lisa_amet').post(ametLisaPost);
+// Uued seoste marsruudid
+router.get('/add-relation', getAddRelation);
+router.post('/add-relation', postAddRelation);
 
 module.exports = router;

@@ -259,6 +259,100 @@ const ametLisaPost = async (req, res) => {
     }
 }; 
 
+//@desc page for adding film relations
+//@route GET /eestifilm/add-relation
+//@access public
+const getAddRelation = async (req, res) => {
+    let conn;
+    try {
+        conn = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_DATABASE
+        });
+        
+        // Loeme andmebaasist filmid, isikud ja ametid rippmenüüde jaoks
+        const [films] = await conn.execute('SELECT id, title FROM movie');
+        const [persons] = await conn.execute('SELECT id, first_name, last_name FROM person');
+        const [positions] = await conn.execute('SELECT id, position_name FROM position');
+
+        res.render('add_relation', { films, persons, positions, notice: 'Ootan seose valikuid!' });
+    } catch (err) {
+        console.log('Viga seoste andmete laadimisel: ' + err);
+        res.render('add_relation', { films: [], persons: [], positions: [], notice: 'Andmete laadimine ebaõnnestus!' });
+    } finally {
+        if (conn) { await conn.end(); }
+    }
+};
+
+//@desc page for adding film relations POST
+//@route POST /eestifilm/add-relation
+//@access public
+const postAddRelation = async (req, res) => {
+    let filmId = req.body.filmInput || null;
+    let personId = req.body.personInput || null;
+    let positionId = req.body.positionInput || null;
+    let characterName = req.body.characterInput ? req.body.characterInput.trim() : null;
+
+    let conn;
+    try {
+        conn = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_DATABASE
+        });
+
+        // 1. Enne salvestamist kontrollime SELECT käsuga, kas täpselt sama seos on juba olemas
+        let checkSql = `
+            SELECT id FROM film_to_position 
+            WHERE film_id = ? AND person_id = ? AND position_id = ? 
+            AND (character_name = ? OR (character_name IS NULL AND ? IS NULL))
+        `;
+        const [existing] = await conn.execute(checkSql, [filmId, personId, positionId, characterName, characterName]);
+
+        // Laeme uuesti rippmenüüde andmed vaate jaoks
+        const [films] = await conn.execute('SELECT id, title FROM movie');
+        const [persons] = await conn.execute('SELECT id, first_name, last_name FROM person');
+        const [positions] = await conn.execute('SELECT id, position_name FROM position');
+
+        if (existing.length > 0) {
+            // Kui vaste saadakse, loobutakse salvestamisest
+            return res.render('add_relation', {
+                films, persons, positions,
+                notice: 'Selline seos on juba olemas, salvestamisest loobuti!'
+            });
+        }
+
+        // 2. Kui vastet polnud, kirjutame uue seose andmebaasi
+        let insertSql = 'INSERT INTO film_to_position (film_id, person_id, position_id, character_name) VALUES (?, ?, ?, ?)';
+        await conn.execute(insertSql, [filmId, personId, positionId, characterName || null]);
+
+        res.render('add_relation', {
+            films, persons, positions,
+            notice: 'Seos on edukalt lisatud!'
+        });
+
+    } catch (err) {
+        console.log('Viga seose lisamisel: ' + err);
+        // Laeme rippmenüüd ka vea korral
+        let films = [], persons = [], positions = [];
+        try {
+            [films] = await conn.execute('SELECT id, title FROM movie');
+            [persons] = await conn.execute('SELECT id, first_name, last_name FROM person');
+            [positions] = await conn.execute('SELECT id, position_name FROM position');
+        } catch (e) {}
+
+        res.render('add_relation', {
+            films, persons, positions,
+            notice: 'Tekkis andmebaasi viga, seost ei salvestatud!'
+        });
+    } finally {
+        if (conn) { await conn.end(); }
+    }
+};
+
 module.exports = {
 	eestifilm,
 	eestifilmInimesed,
@@ -267,5 +361,7 @@ module.exports = {
 	eestifilmLisa,
 	eestifilmLisaPost,
 	ametLisa,
-	ametLisaPost
-}
+	ametLisaPost,
+	getAddRelation,
+	postAddRelation
+};
