@@ -1,2 +1,6 @@
 galeriifotode tabel
 CREATE TABLE `if26_nikita_kirpikin`.`galleryphotos` (`id` INT(4) NOT NULL AUTO_INCREMENT , `filename` VARCHAR(50) NOT NULL , `origname` VARCHAR(100) NOT NULL , `alttext` VARCHAR(256) NULL , `privacy` INT(1) NOT NULL , `userid` INT NOT NULL , `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `deleted` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+Kasutajad
+CREATE TABLE `if26_nikita_kirpikin``.`users` (`id` INT(4) NOT NULL AUTO_INCREMENT , `firstname` VARCHAR(140) NOT NULL , `lastname` VARCHAR(100) NOT NULL , `birthdate` DATE NOT NULL , `gender` INT(1) NOT NULL , `email` VARCHAR(250) NOT NULL , `password` VARCHAR(120) NOT NULL , `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;

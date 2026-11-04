@@ -5,18 +5,36 @@
 	<title>Nikita Kirpikin, veebiprogrammeerimine</title>
 </head>
 <body>
-	<img src="pic/veebiprogrammeerimine_2026_AA.png" alt="banner">	<h1>Nikita Kirpikin, veebiprogrammeerimine</h1>
-	 <p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
+	<img src="pic/veebiprogrammeerimine_2026_AA.png" alt="banner">	
+	<h1>Nikita Kirpikin, veebiprogrammeerimine</h1>
+	<p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
 	<p>Esialgu tutvusime lihtsalt HTML keelega, nüüd juba programmeerime.</p>
 	<hr>
 	<p>Täna on <%= day %>, <%= date %>, kell oli lehe avamise hetkel: <%= time %>.</p>
+	
 	<ul>
+		<li><a href="/signup">Kasutajakonto loomine</a></li>
+		<li><a href="/signin">Logi sisse</a></li>
+		<br>
 		<li><a href="/tlu">Natuke Tallinna Ülikoolist</a></li>
 		<li><a href="/vanasona">Tänane vanasõna</a></li>
 		<li><a href="/regvisit">Külastuse registreerimine</a></li>
 		<li><a href="/miks-tlu">Miks ma valisin TLU?</a></li>
 		<li><a href="/eestifilm">Eesti film</a></li>
-		<li><a href="/galleryphotoupload">Fotode üleslaadimine galeriisse</a></li>
 	</ul>
+
+	<hr>
+
+	<!-- UUESIM AVALIK FOTO -->
+	<h2>Viimati lisatud avalik foto</h2>
+	<% if (latestPhoto) { %>
+		<div>
+			<img src="/gallery/normal/<%= latestPhoto.filename %>" alt="<%= latestPhoto.alttext %>" style="max-width: 400px; height: auto;">
+			<p><%= latestPhoto.alttext %></p>
+		</div>
+	<% } else { %>
+		<p>Ühtegi avalikku fotot pole veel üles laaditud.</p>
+	<% } %>
+
 </body>
 </html>

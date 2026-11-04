@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Nikita Kirpikin, veebiprogrammeerimine</title>
+</head>
+<body>
+	<img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+	<h1>Fotogalerii</h1>
+	<p><a href="/home">Avalehele</a></p>
+	<li><a href="/logout">Logi välja!</a></li>
+	<hr>
+
+	<div class="gallery-container">
+		<% if (photos && photos.length > 0) { %>
+			<% photos.forEach(photo => { %>
+				<div class="photo-box" style="display: inline-block; margin: 10px; text-align: center;">
+					<!-- Klikkides avaneb suurem normal-mõõdus pilt -->
+					<a href="/gallery/normal/<%= photo.filename %>" target="_blank">
+						<!-- Kuvame pisipildi (thumbs) -->
+						<img src="/gallery/thumbs/<%= photo.filename %>" alt="<%= photo.alttext %>" style="width: 100px; height: 100px; object-fit: cover;">
+					</a>
+					<p><%= photo.alttext %></p>
+				</div>
+			<% }) %>
+		<% } else { %>
+			<p>Galeriis pole ühtegi fotot.</p>
+		<% } %>
+	</div>
+</body>
+</html>
